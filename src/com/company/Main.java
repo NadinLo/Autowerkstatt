@@ -8,5 +8,6 @@ public class Main {
         person.car.carDrives(50);
         person.car.carDrives(100);
         person.car.goToFuelStation(new FuelStation());
+        person.payBill();
     }
 }

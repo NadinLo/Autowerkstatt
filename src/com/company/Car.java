@@ -25,8 +25,8 @@ public class Car {
     }
 
     public void carDrives (int distance) {
-        boolean isDrivingAlowed = carCheck(distance);
-        if (isDrivingAlowed) {
+        boolean isDrivingAllowed = carCheck(distance);
+        if (isDrivingAllowed) {
             this.mileage = this.mileage + distance;
             this.kilometerToService = this.kilometerToService - distance;
             this.consumptionLastDrive = (this.fuelConsumptionEvery100Km/100 * distance);

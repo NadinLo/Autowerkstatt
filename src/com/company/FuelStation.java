@@ -1,13 +1,14 @@
 package com.company;
 
+import java.text.DecimalFormat;
+
 public class FuelStation {
     double prizeBenzine;
     double prizeDiesel;
-    Fuel type;
     double refillCapacity;
     double prizeToPay;
-    Car car;
-    String bill;
+    DecimalFormat decimalFormat = new DecimalFormat("##.##");
+
 
 
     public FuelStation() {
@@ -31,9 +32,9 @@ public class FuelStation {
 
     public void receiveBill(double refillCapacity, Car car) {
         System.out.println("Bill----------------\n" +
-                "Capacity of rifilled fuel in liter: " + refillCapacity + "\n" +
+                "Capacity of refilled fuel in liter: " + decimalFormat.format(refillCapacity) + "\n" +
                 "refuelled with " + car.drivesWith + "\n" +
-                "Bill to pay: " + this.prizeToPay);
+                "Bill to pay: " + decimalFormat.format(this.prizeToPay));
 
     }
 
