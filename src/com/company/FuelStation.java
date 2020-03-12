@@ -21,12 +21,11 @@ public class FuelStation {
         refillCapacity = car.fuelMax - car.fuelGauge;
         if (car.drivesWith == Fuel.BENZINE) {
             prizeToPay = refillCapacity * prizeBenzine;
-            car.fuelStation.receiveBill(refillCapacity, car);
 
         } else {
             prizeToPay = refillCapacity * prizeDiesel;
-            car.fuelStation.receiveBill(refillCapacity, car);
         }
+        car.fuelStation.receiveBill(refillCapacity, car);
 
     }
 
