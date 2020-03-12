@@ -3,15 +3,18 @@ package com.company;
 public class Car {
     String brand;
     int horsepower;
-    int fuelConsumptionEvery100Km;
+    double fuelConsumptionEvery100Km;       // in Liter
     int mileage;
     int kilometerToService;
-    int fuelMax;
-    int fuelGauge;
+    int fuelMax;                            // in Liter
+    double fuelGauge;                       // in Liter
+    Fuel drivesWith;
+    FuelStation fuelStation;
 
-    public Car (String brand, int horsepower, int fuelConsumptionEvery100Km, int fuelMax){
+    public Car (String brand, int horsepower, Fuel drivesWith, double fuelConsumptionEvery100Km, int fuelMax){
         this.brand = brand;
         this.horsepower = horsepower;
+        this.drivesWith = drivesWith;
         this.fuelConsumptionEvery100Km = fuelConsumptionEvery100Km;
         this.mileage = 0;
         this.kilometerToService = 6000;
@@ -29,8 +32,7 @@ public class Car {
         else {
             System.out.println("Got to the next Fuel Station. You're lucky. The next one is just 2 km away.");
             carDrives(2);
-            //todo: goToFuelStation();
-
+            this.goToFuelStation(new FuelStation());
         }
     }
     public boolean carCheck(int distance){
@@ -45,5 +47,9 @@ public class Car {
         else {
             return true;
         }
+    }
+    public void goToFuelStation (FuelStation fuelStation){
+        this.fuelStation = fuelStation;
+        this.fuelStation.refuel(this);
     }
 }
