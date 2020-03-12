@@ -6,6 +6,8 @@ public class FuelStation {
     Fuel type;
     double refillCapacity;
     double prizeToPay;
+    Car car;
+    String bill;
 
 
     public FuelStation() {
@@ -14,13 +16,25 @@ public class FuelStation {
 
     }
 
-    public void refuel (Car car){
+    public void refuel(Car car) {
         refillCapacity = car.fuelMax - car.fuelGauge;
-        if(car.drivesWith == Fuel.BENZINE){
-            prizeToPay = refillCapacity*prizeBenzine;
+        if (car.drivesWith == Fuel.BENZINE) {
+            prizeToPay = refillCapacity * prizeBenzine;
+            car.fuelStation.receiveBill(refillCapacity, car);
+
         } else {
-            prizeToPay = refillCapacity*prizeDiesel;
+            prizeToPay = refillCapacity * prizeDiesel;
+            car.fuelStation.receiveBill(refillCapacity, car);
         }
+
+    }
+
+    public void receiveBill(double refillCapacity, Car car) {
+        System.out.println("Bill----------------\n" +
+                "Capacity of rifilled fuel in liter: " + refillCapacity + "\n" +
+                "refuelled with " + car.drivesWith + "\n" +
+                "Bill to pay: " + this.prizeToPay);
+
     }
 
 }
