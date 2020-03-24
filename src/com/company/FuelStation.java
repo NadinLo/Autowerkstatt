@@ -2,39 +2,63 @@ package com.company;
 
 import java.text.DecimalFormat;
 
-public class FuelStation {
-    double prizeBenzine;
-    double prizeDiesel;
+public class FuelStation implements IFuel {
+    Company company;
+    Location location;
+    FuelPrice[] fuels;
+
     double refillCapacity;
-    double prizeToPay;
+    double priceToPay;
     DecimalFormat decimalFormat = new DecimalFormat("##.##");
 
-
-
-    public FuelStation() {
-        this.prizeBenzine = 1.24;
-        this.prizeDiesel = 1.15;
-
+    public FuelStation(Company company, Location location, FuelPrice[] fuels) {
+        this.company = company;
+        this.location = location;
+        this.fuels = fuels;
     }
 
-    public void refuel(Car car) {
-        refillCapacity = car.fuelMax - car.fuelGauge;
-        if (car.drivesWith == Fuel.BENZINE) {
-            prizeToPay = refillCapacity * prizeBenzine;
-
-        } else {
-            prizeToPay = refillCapacity * prizeDiesel;
+    @Override
+    public boolean hasMyFuel(Fuel fuel) {
+        boolean hasMyFuel = false;
+        for (FuelPrice fuel1 : fuels) {
+            if (fuel1.fuel == fuel) {
+                hasMyFuel = true;
+                break;
+            }
         }
-        car.fuelStation.receiveBill(refillCapacity, car);
-
+        return hasMyFuel;
     }
 
-    public void receiveBill(double refillCapacity, Car car) {
+    @Override
+    public Location getLocation() {
+        return this.location;
+    }
+
+    @Override
+    public void goFuel(Car car) {
+        this.refillCapacity = car.fuelMax - car.tank;
+        double fuelPrice = 0;
+        for (FuelPrice fuel: fuels) {
+            if(fuel.fuel == car.drivesWith){
+                fuelPrice = fuel.price;
+            }
+        }
+        this.priceToPay = this.refillCapacity * fuelPrice;
+        car.tank = car.fuelMax;
+        printBill(this.refillCapacity, fuelPrice, car);
+    }
+
+    @Override
+    public double getPriceToPay() {
+        return this.priceToPay;
+    }
+
+    public void printBill(double refillCapacity, double fuelPrice, Car car) {
         System.out.println("Bill----------------\n" +
                 "Capacity of refilled fuel in liter: " + decimalFormat.format(refillCapacity) + "\n" +
                 "refuelled with " + car.drivesWith + "\n" +
-                "Bill to pay: " + decimalFormat.format(this.prizeToPay));
+                "Price per liter fuel: " + fuelPrice + "\n" +
+                "Bill to pay: " + decimalFormat.format(this.priceToPay));
 
     }
-
 }
