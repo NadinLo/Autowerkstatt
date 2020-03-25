@@ -3,6 +3,7 @@ package com.company;
 import java.text.DecimalFormat;
 
 public class Car {
+    Tyre[] setOfTyres;
     String brand;
     double fuelConsumptionEvery100Km;       // in Liter
     double mileage;
@@ -14,7 +15,7 @@ public class Car {
     Location location;
     DecimalFormat df = new DecimalFormat("###.##");
 
-    public Car (String brand, Fuel drivesWith, double fuelConsumptionEvery100Km, int fuelMax){
+    public Car (String brand, Fuel drivesWith, double fuelConsumptionEvery100Km, int fuelMax, TyreType tyreType){
         this.brand = brand;
         this.drivesWith = drivesWith;
         this.fuelConsumptionEvery100Km = fuelConsumptionEvery100Km;
@@ -22,7 +23,7 @@ public class Car {
         this.kilometerToService = 6000;
         this.fuelMax = fuelMax;
         this.tank = this.fuelMax;
-
+        this.setOfTyres = new Tyre[]{new Tyre(tyreType), new Tyre(tyreType), new Tyre(tyreType), new Tyre(tyreType)};
     }
 
     public void setLocation(Location location) {
@@ -58,7 +59,6 @@ public class Car {
             return true;
         }
     }
-
 
     public void printCarStatus (){
         System.out.println("current Status:\n" +

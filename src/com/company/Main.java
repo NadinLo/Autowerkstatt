@@ -1,10 +1,13 @@
 package com.company;
 
 public class Main {
-
+//todo: Class ChargingStation (nur Electricity) mit BasisKlasse über FuelStation und ChargingStation
+    //todo: FuelStation kann auch Elemente von ChargingStation haben ???
     public static void main(String[] args) {
         Person person = new Person("Nadin", 200);
-        person.buyCar(new Car("VW", Fuel.BENZINE,6, 40));
+        ServiceStation myServiceStation = new ServiceStation(Location.BLUDENZ, "Lieblingswerkstatt");
+
+        person.buyCar(new Car("VW", Fuel.BENZINE,6, 40, TyreType.SUMMER_TYRE));
         person.car.setLocation(Location.BREGENZ);
         IFuel[] fuelStations = new IFuel[90];
         newFuelStation(fuelStations);
@@ -14,7 +17,8 @@ public class Main {
         person.refuel(fuelStations);
         person.payBill();
 
-
+        person.goToService(myServiceStation);
+        person.changeTyres(myServiceStation, TyreType.WINTER_TYRE);
 
     }
 

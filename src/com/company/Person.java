@@ -7,8 +7,8 @@ public class Person {
     double wallet;
     double toPay;
     Car car;
+    Tyre[] storage = new Tyre[4];
     DecimalFormat decimalFormat = new DecimalFormat("##.##");
-
 
     public Person(String name, double wallet) {
         this.name = name;
@@ -29,6 +29,14 @@ public class Person {
                 }
             }
         }
+    }
+
+    public void goToService (ServiceStation serviceStation){
+        toPay = serviceStation.doService(this.car);
+    }
+
+    public void changeTyres (ServiceStation serviceStation, TyreType tyreType){
+        toPay = serviceStation.changeTyres(this.storage, tyreType, this.car);
     }
 
     public void payBill() {
