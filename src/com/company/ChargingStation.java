@@ -1,12 +1,10 @@
 package com.company;
 
-import java.text.DecimalFormat;
-
-public class FuelStation extends EnergySupply {
-
-    public FuelStation(Company company, Location location, FuelPrice[] fuels) {
+public class ChargingStation extends EnergySupply {
+    public ChargingStation(Company company, Location location, double price) {
         super(company, location);
-        this.fuels = fuels;
+        this.fuels = new FuelPrice[]{new FuelPrice(Fuel.ELECTRICITY, price)};
+
     }
 
     @Override
@@ -14,8 +12,8 @@ public class FuelStation extends EnergySupply {
         super.printBill(refillCapacity, fuelPrice, car);
         System.out.println("Bill----------------\n" +
                 "Amount: " + decimalFormat.format(refillCapacity) + "\n" +
-                "refueled with " + car.drivesWith + "\n" +
-                "Price per liter: " + fuelPrice + "\n" +
+                "charged with " + car.drivesWith + "\n" +
+                "Price per kwh: " + fuelPrice + "\n" +
                 "Bill to pay: " + decimalFormat.format(this.priceToPay));
     }
 }
