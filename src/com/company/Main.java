@@ -1,5 +1,7 @@
 package com.company;
 
+import java.io.IOException;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -14,10 +16,14 @@ public class Main {
         person.car.drives(Location.DORNBIRN, 12);
         person.car.drives(Location.BLUDENZ, 44.5);
         person.refuel(fuelStations);
+        person.askForReceipt(person.myEnergySupply);
         person.payBill();
 
         person.goToService(myServiceStation);
         person.changeTyres(myServiceStation, TyreType.WINTER_TYRE);
+        person.askForReceipt(myServiceStation);
+        person.payBill();
+
 
     }
 
