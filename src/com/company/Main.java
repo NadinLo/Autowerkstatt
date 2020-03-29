@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        Person person = new Person("Nadin", 200);
+        Person person = new Person("Nadin", 1500);
         ServiceStation myServiceStation = new ServiceStation(Location.BLUDENZ, "Lieblingswerkstatt");
 
         person.buyCar(new Car("VW", Fuel.BENZINE,6, 40, TyreType.SUMMER_TYRE));
@@ -18,6 +18,8 @@ public class Main {
         person.refuel(fuelStations);
         person.askForReceipt(person.myEnergySupply);
         person.payBill();
+
+
 
         person.goToService(myServiceStation);
         person.changeTyres(myServiceStation, TyreType.WINTER_TYRE);

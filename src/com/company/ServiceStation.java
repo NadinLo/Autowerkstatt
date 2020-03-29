@@ -11,7 +11,6 @@ public class ServiceStation implements IService{
     String name;
     double toPay;
 
-    String lineOnReceipt = "---------------";                   //15 Chars
     ArrayList<String> linesOnReceipt = new ArrayList<>();
 
     public ServiceStation (Location location, String name) {
@@ -26,7 +25,7 @@ public class ServiceStation implements IService{
                 storage[i] = car.setOfTyres[i];
                 car.setOfTyres[i] = new Tyre(tyreType);
                 this.toPay = this.toPay + 100;
-                addLineToReceipt("new Tyre. " + tyreType.toString(), 100.00);
+                addLineToReceipt("new_Tyre:" + tyreType.toString(), 100.00);
             }
             else if (storage[i].tyreType == tyreType){
                 Tyre x = car.setOfTyres[i];
@@ -48,25 +47,31 @@ public class ServiceStation implements IService{
     }
 
     public void addLineToReceipt(String serviceProvided, double price) {
+        String lineOnReceipt = "---------------";                   //15 Chars
+
         char[]lineOnReceiptChar = lineOnReceipt.toCharArray();
-        int endIndex = Math.min(serviceProvided.length(), lineOnReceiptChar.length); //mind.Länge von serviceProvided, aber max.Länge von lineOnReceipt
+        int endIndex = Math.min(serviceProvided.length(), lineOnReceiptChar.length-2); //mind.Länge von serviceProvided, aber max.Länge von lineOnReceipt -2
         char[]serviceProvidedChar = serviceProvided.substring(0, endIndex).toCharArray(); //serviceProvided evtl.kürzen
 
         for (int i = 0; i < serviceProvidedChar.length && i < lineOnReceiptChar.length; i++) { //ersten Chars von lineOnReceipt werden durch serviceProvided ersetzt
             lineOnReceiptChar[i] = serviceProvidedChar[i];
         }
-        this.lineOnReceipt = Arrays.toString(lineOnReceiptChar) + price + " €\n";     // durch Preis ergänzt
+        lineOnReceipt = Arrays.toString(lineOnReceiptChar) + price + " €\n";     // durch Preis ergänzt
         this.linesOnReceipt.add(lineOnReceipt);
     }
 
     @Override
     public void printBill (){
         try {
-            File receipt = new File ("C:\\Users\\DCV\\Documents\\Coding\\Java IO\\Texte\\Bill.txt");
+            File receipt = new File ("C:\\Users\\DCV\\Documents\\Coding\\Java IO\\Texte\\Bill_ServiceStation.txt");
             FileWriter myWriter = new FileWriter(receipt);
             myWriter.write("Your receipt\n\n");
-            myWriter.write(linesOnReceipt.toString());
-            myWriter.write("\n" + lineOnReceipt + toPay + " €");
+            myWriter.write(linesOnReceipt.toString().
+                    replace(",", "").
+                    replace(" ", "").
+                    replace("[", "").
+                    replace("]",""));
+            myWriter.write("\n" + "---------------" + toPay + " €\n");
             myWriter.write("" + name + "\n" + location);
             myWriter.close();
         } catch (IOException ex){

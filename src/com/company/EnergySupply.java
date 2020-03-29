@@ -53,7 +53,7 @@ public  class EnergySupply implements IFuel{
         }
         this.priceToPay = this.priceToPay + (this.refillCapacity * fuelPrice);
         car.tank = car.fuelMax;
-        addLineToReceipt("refueld: ", refillCapacity);
+        addLineToReceipt("refueld:", refillCapacity);
         addLineToReceipt("" + car.drivesWith, fuelPrice);
     }
 
@@ -64,30 +64,32 @@ public  class EnergySupply implements IFuel{
 
     @Override
     public void addLineToReceipt(String serviceProvided, double price) {
-        lineOnReceipt = "";
-        char[]lineOnReceiptChar = stub.toCharArray();
-        int endIndex = Math.min(serviceProvided.length(), lineOnReceiptChar.length); //mind.Länge von serviceProvided, aber max.Länge von lineOnReceipt
+        String lineOnReceipt = "---------------";                   //15 Chars
+
+        char[]lineOnReceiptChar = lineOnReceipt.toCharArray();
+        int endIndex = Math.min(serviceProvided.length(), lineOnReceiptChar.length-2); //mind.Länge von serviceProvided, aber max.Länge von lineOnReceipt -2
         char[]serviceProvidedChar = serviceProvided.substring(0, endIndex).toCharArray(); //serviceProvided evtl.kürzen
 
         for (int i = 0; i < serviceProvidedChar.length && i < lineOnReceiptChar.length; i++) { //ersten Chars von lineOnReceipt werden durch serviceProvided ersetzt
             lineOnReceiptChar[i] = serviceProvidedChar[i];
         }
-        for (char c : lineOnReceiptChar) {                                      //Array to String (aber ohne [ ])
-            lineOnReceipt = this.lineOnReceipt + c;
-        }
-        lineOnReceipt = this.lineOnReceipt + decimalFormat.format(price) + " €\n";     // durch Preis ergänzt
+        lineOnReceipt = Arrays.toString(lineOnReceiptChar).replace(",", "") + decimalFormat.format(price) + " €\n";     // durch Preis ergänzt
         this.linesOnReceipt.add(lineOnReceipt);
     }
 
     @Override
     public void printBill() {
         try {
-            File receipt = new File ("C:\\Users\\DCV\\Documents\\Coding\\Java IO\\Texte\\Bill.txt");
+            File receipt = new File ("C:\\Users\\DCV\\Documents\\Coding\\Java IO\\Texte\\Bill_EnergySupply.txt");
             FileWriter myWriter = new FileWriter(receipt);
             myWriter.write("Your receipt\n\n");
-            myWriter.write(linesOnReceipt.toString());
-            myWriter.write("\n" + stub + this.priceToPay + " €");
-            myWriter.write(company.toString() + "\t" + location.toString());
+            myWriter.write(linesOnReceipt.toString().
+                    replace("\n,","\n").
+                    replace(" ", "").
+                    replace("[", "").
+                    replace("]",""));
+            myWriter.write("\n" + stub + decimalFormat.format(this.priceToPay) + " €\n");
+            myWriter.write(company.toString() + "\n" + location.toString());
             myWriter.close();
         } catch (IOException ex){
             ex.printStackTrace();

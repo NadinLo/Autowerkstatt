@@ -44,12 +44,10 @@ public class Person {
 
     public void askForReceipt (ServiceStation serviceStation){
         serviceStation.printBill();
-        payBill();
     }
 
     public void askForReceipt (IFuel myEnergySupply){
         myEnergySupply.printBill();
-        payBill();
     }
 
     public void payBill() {
