@@ -8,6 +8,7 @@ public class Person {
     double toPay;
     Car car;
     Tyre[] storage = new Tyre[4];
+    IFuel myEnergySupply;
     DecimalFormat decimalFormat = new DecimalFormat("##.##");
 
     public Person(String name, double wallet) {
@@ -20,15 +21,17 @@ public class Person {
     }
 
     public void refuel (IFuel[] fuelStations){
-        for (IFuel fuel: fuelStations) {
-            if (fuel != null) {
-                if (fuel.hasMyFuel(this.car.drivesWith) && fuel.getLocation() == this.car.location) {
-                    fuel.goFuel(this.car);
-                    this.toPay = fuel.getPriceToPay();
+        int i;
+        for (i = 0; i < fuelStations.length; i++){
+            if (fuelStations[i] != null) {
+                if (fuelStations[i].hasMyFuel(this.car.drivesWith) && fuelStations[i].getLocation() == this.car.location) {
+                    fuelStations[i].goFuel(this.car);
+                    this.toPay = fuelStations[i].getPriceToPay();
                     break;
                 }
             }
         }
+        this.myEnergySupply = fuelStations[i];
     }
 
     public void goToService (ServiceStation serviceStation){
@@ -36,7 +39,15 @@ public class Person {
     }
 
     public void changeTyres (ServiceStation serviceStation, TyreType tyreType){
-        toPay = serviceStation.changeTyres(this.storage, tyreType, this.car);
+        toPay = toPay + serviceStation.changeTyres(this.storage, tyreType, this.car);
+    }
+
+    public void askForReceipt (ServiceStation serviceStation){
+        serviceStation.printBill();
+    }
+
+    public void askForReceipt (IFuel myEnergySupply){
+        myEnergySupply.printBill();
     }
 
     public void payBill() {

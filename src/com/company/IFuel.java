@@ -5,4 +5,6 @@ public interface IFuel {
     Location getLocation();
     void goFuel(Car car);
     double getPriceToPay ();
+    void addLineToReceipt(String serviceProvided, double price);
+    void printBill();
 }

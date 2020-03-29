@@ -1,6 +1,11 @@
 package com.company;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public  class EnergySupply implements IFuel{
     Company company;
@@ -10,6 +15,10 @@ public  class EnergySupply implements IFuel{
     double refillCapacity;
     double priceToPay;
     DecimalFormat decimalFormat = new DecimalFormat("##.##");
+
+    final String stub = "---------------";                   //15 Chars
+    String lineOnReceipt = "";
+    ArrayList<String> linesOnReceipt = new ArrayList<>();
 
     public EnergySupply(Company company, Location location) {
         this.company = company;
@@ -42,9 +51,10 @@ public  class EnergySupply implements IFuel{
                 fuelPrice = fuel.price;
             }
         }
-        this.priceToPay = this.refillCapacity * fuelPrice;
+        this.priceToPay = this.priceToPay + (this.refillCapacity * fuelPrice);
         car.tank = car.fuelMax;
-        printBill(this.refillCapacity, fuelPrice, car);
+        addLineToReceipt("refueld:", refillCapacity);
+        addLineToReceipt("" + car.drivesWith, fuelPrice);
     }
 
     @Override
@@ -52,12 +62,38 @@ public  class EnergySupply implements IFuel{
         return this.priceToPay;
     }
 
-    public void printBill(double refillCapacity, double fuelPrice, Car car) {
-        System.out.println("Bill----------------\n" +
-                "Amount: " + decimalFormat.format(refillCapacity) + "\n" +
-                "[...] with " + car.drivesWith + "\n" +                     // charged / refilled with
-                "Price [...]: " + fuelPrice + "\n" +                        //per liter / kwh
-                "Bill to pay: " + decimalFormat.format(this.priceToPay));
+    @Override
+    public void addLineToReceipt(String serviceProvided, double price) {
+        String lineOnReceipt = "---------------";                   //15 Chars
+
+        char[]lineOnReceiptChar = lineOnReceipt.toCharArray();
+        int endIndex = Math.min(serviceProvided.length(), lineOnReceiptChar.length-2); //mind.Länge von serviceProvided, aber max.Länge von lineOnReceipt -2
+        char[]serviceProvidedChar = serviceProvided.substring(0, endIndex).toCharArray(); //serviceProvided evtl.kürzen
+
+        for (int i = 0; i < serviceProvidedChar.length && i < lineOnReceiptChar.length; i++) { //ersten Chars von lineOnReceipt werden durch serviceProvided ersetzt
+            lineOnReceiptChar[i] = serviceProvidedChar[i];
+        }
+        lineOnReceipt = Arrays.toString(lineOnReceiptChar).replace(",", "") + decimalFormat.format(price) + " €\n";     // durch Preis ergänzt
+        this.linesOnReceipt.add(lineOnReceipt);
+    }
+
+    @Override
+    public void printBill() {
+        try {
+            File receipt = new File ("C:\\Users\\DCV\\Documents\\Coding\\Java IO\\Texte\\Bill_EnergySupply.txt");
+            FileWriter myWriter = new FileWriter(receipt);
+            myWriter.write("Your receipt\n\n");
+            myWriter.write(linesOnReceipt.toString().
+                    replace("\n,","\n").
+                    replace(" ", "").
+                    replace("[", "").
+                    replace("]",""));
+            myWriter.write("\n" + stub + decimalFormat.format(this.priceToPay) + " €\n");
+            myWriter.write(company.toString() + "\n" + location.toString());
+            myWriter.close();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
 
     }
 

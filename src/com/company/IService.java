@@ -1,6 +1,10 @@
 package com.company;
 
 public interface IService {
-    public double changeTyres(Tyre[] storage, TyreType tyreType, Car car);
-    public double doService(Car car);
+    double changeTyres(Tyre[] storage, TyreType tyreType, Car car);
+    double doService(Car car);
+    void printBill ();
+    void addLineToReceipt(String serviceProvided, double price);
+
+
 }
